@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dino Tamagotchi Controls</title>
+    <style>
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px; /* Add padding to the container */
+        }
+        
+        .button-container img {
+            width: calc(50% - 20px);
+            margin-bottom: 10px;
+            cursor: pointer; /* Cursor on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="button-container">
+        <img src="sprite_08.png" alt="New Game" id="button1">
+        <img src="sprite_00.png" alt="feed" id="button2">
+        <img src="sprite_06.png" alt="Options" id="button3">
+        <img src="sprite_02.png" alt="Quit Game" id="button4">
+    </div>
+
+    <script>
+        // Function to handle button clicks and send data to Python server
+        function handleButtonClick(action) {
+            // Send data to Python server using AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://localhost:8000/action", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                    console.log("Response from server:", xhr.responseText);
+                }
+            };
+            xhr.send(JSON.stringify({ action: action }));
+        }
+
+        // Add event listeners for mouse down and mouse up events to change button images
+        document.getElementById("button1").addEventListener("mousedown", function() {
+            this.src = "sprite_09.png"; // Change image to pressed state
+        });
+
+        document.getElementById("button1").addEventListener("mouseup", function() {
+            this.src = "sprite_08.png"; // Change image back to unpressed state
+            handleButtonClick("new_game");
+        });
+
+        document.getElementById("button2").addEventListener("mousedown", function() {
+            this.src = "sprite_01.png"; // Change image to pressed state
+        });
+
+        document.getElementById("button2").addEventListener("mouseup", function() {
+            this.src = "sprite_00.png"; // Change image back to unpressed state
+            handleButtonClick("feed");
+        });
+
+        document.getElementById("button3").addEventListener("mousedown", function() {
+            this.src = "sprite_07.png"; // Change image to pressed state
+        });
+
+        document.getElementById("button3").addEventListener("mouseup", function() {
+            this.src = "sprite_06.png"; // Change image back to unpressed state
+            handleButtonClick("options");
+        });
+
+        document.getElementById("button4").addEventListener("mousedown", function() {
+            this.src = "sprite_03.png"; // Change image to pressed state
+        });
+
+        document.getElementById("button4").addEventListener("mouseup", function() {
+            this.src = "sprite_02.png"; // Change image back to unpressed state
+            handleButtonClick("quit_game");
+        });
+    </script>
+</body>
+</html>
+
